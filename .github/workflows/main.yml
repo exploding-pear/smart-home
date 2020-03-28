@@ -42,5 +42,7 @@ jobs:
         arduino-cli core update-index
         arduino-cli core install arduino:samd
         arduino-cli lib install WiFiNINA
-        arduino-cli compile --fqbn arduino:samd:mkrwifi1010 smartswitch
+        mkdir build
+        mkdir build-cache
+        arduino-cli compile --build-path $(pwd)/build --build-cache-path $(pwd)/build-cache --fqbn arduino:samd:mkrwifi1010 smartswitch
       
