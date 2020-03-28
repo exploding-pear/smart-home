@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
 int status = WL_IDLE_STATUS;
-const char * credentials = "xxx, xxx"
+const char * credentials = "xxx, xxx";
 
 void setup() {
   //Initialize serial and wait for port to open:
