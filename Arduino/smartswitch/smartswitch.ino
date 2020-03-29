@@ -1,9 +1,12 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
+#include "Secrets.h"
 int status = WL_IDLE_STATUS;
-const char * credentials = "xxx, xxx";
 
 void setup() {
+  //get ssid and password from Secrets.h
+  char * ssid = SSID;
+  char * pass = PASSWORD;
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -11,7 +14,7 @@ void setup() {
   }
 
   //connect to network
-  NetConnect();
+  NetConnect(ssid, pass);
   //print out network info
   NetInfo();
 
@@ -29,7 +32,7 @@ void NetInfo() {
   Serial.println(WiFi.localIP()); 
 }
 
-void NetConnect() {
+void NetConnect(char * ssid, char * pass) {
   //check for WiFi module
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("Communication with WiFi module failed");
@@ -45,7 +48,9 @@ void NetConnect() {
   //attempt to connect to network
   while (status != WL_CONNECTED) {
     Serial.println("Attempting to connect to network");
-    status = WiFi.begin(credentials);
+    Serial.println(ssid);
+    Serial.println(pass);
+    status = WiFi.begin(ssid, pass);
     delay(10000);
   }
 
