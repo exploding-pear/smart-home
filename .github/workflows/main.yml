@@ -40,7 +40,7 @@ jobs:
     - name: Compile 1010 wifi
       run: |
         cd Arduino
-        cp example_Secrets.h Secrets.h
+        cp smartswitch/example_Secrets.h smartswitch/Secrets.h
         arduino-cli core update-index
         arduino-cli core install arduino:samd
         arduino-cli lib install WiFiNINA
