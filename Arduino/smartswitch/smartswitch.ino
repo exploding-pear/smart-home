@@ -23,7 +23,7 @@
 #include <ArduinoBearSSL.h>
 #include <ArduinoECCX08.h>
 #include <ArduinoMqttClient.h>
-#include <WiFiNINA.h> // change to #include <WiFi101.h> for MKR1000
+#include <WiFiNINA.h>
 
 #include "arduino_secrets.h"
 
@@ -35,7 +35,7 @@ const char* certificate  = SECRET_CERTIFICATE;
 
 WiFiClient    wifiClient;            // Used for the TCP socket connection
 BearSSLClient sslClient(wifiClient); // Used for SSL/TLS connection, integrates with ECC508
-MqttClient    mqttClient(sslClient);
+MqttClient    mqttClient(sslClient); // Used for MQTT connection
 
 unsigned long lastMillis = 0;
 
@@ -135,7 +135,6 @@ void publishMessage() {
   // send message, the Print interface can be used to set the message contents
   mqttClient.beginMessage("arduino/outgoing");
   mqttClient.print("hello ");
-  mqttClient.print(millis());
   mqttClient.endMessage();
 }
 
