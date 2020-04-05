@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	//"fmt"
+	"log"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-lambda-go/events"
 )
@@ -20,10 +21,10 @@ func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	//fmt.Printf("Processing request data for request %s.\n", request.RequestContext.RequestID)
 	//fmt.Printf("Body size = %d.\n", len(request.Body))
 
-	//fmt.Println("Headers:")
-	//for key, value := range request.Headers {
-	//	fmt.Printf("    %s: %s\n", key, value)
-	//}
+	log.Println("Headers:")
+	for key, value := range request.Headers {
+		log.Printf("    %s: %s\n", key, value)
+	}
 	_, found := request.Headers["Authorization"]
 
 	if !found {
