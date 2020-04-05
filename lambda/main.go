@@ -3,7 +3,7 @@ package main
 //dummy commit
 import (
 	"context"
-	"fmt"
+	//"fmt"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-lambda-go/events"
 )
@@ -27,10 +27,10 @@ func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	value, found := request.Headers["Authorization"]
 
 	if !found {
-		return events.APIGatewayProxyResponse{Message: "unauthorized"}, nil
+		return events.APIGatewayProxyResponse{Body: "\"message\": \"unauthorized\"", StatusCode: 401}, nil
 	}
 
-	return events.APIGatewayProxyResponse{Body: request.Body, Headers: request.Headers, StatusCode: 200}, nil
+	return events.APIGatewayProxyResponse{Body: request.Headers, StatusCode: 200}, nil
 }
 
 func main() {
