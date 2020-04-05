@@ -1,19 +1,34 @@
 package main
+
 //dummy commit
 import (
-        "fmt"
-        "context"
-        "github.com/aws/aws-lambda-go/lambda"
+	"context"
+	"fmt"
+	"os"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/events"
 )
 
 type MyEvent struct {
-        Name string `json:"name"`
+	Name string `json:"name"`
 }
 
-func HandleRequest(ctx context.Context, name MyEvent) (string, error) {
-        return fmt.Sprintf("{\"message\": \"Hello %s!\"}", name.Name ), nil
+type MyResponse struct {
+	Message string `json:"Response:"`
+}
+
+func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	fmt.Printf("Processing request data for request %s.\n", request.RequestContext.RequestID)
+	fmt.Printf("Body size = %d.\n", len(request.Body))
+
+	fmt.Println("Headers:")
+	for key, value := range request.Headers {
+		fmt.Printf("    %s: %s\n", key, value)
+	}
+
+	return events.APIGatewayProxyResponse{Body: request.Body, StatusCode: 200}, nil
 }
 
 func main() {
-        lambda.Start(HandleRequest)
+	lambda.Start(HandleRequest)
 }
