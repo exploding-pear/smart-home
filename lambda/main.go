@@ -24,13 +24,13 @@ func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	//for key, value := range request.Headers {
 	//	fmt.Printf("    %s: %s\n", key, value)
 	//}
-	value, found := request.Headers["Authorization"]
+	_, found := request.Headers["Authorization"]
 
 	if !found {
 		return events.APIGatewayProxyResponse{Body: "\"message\": \"unauthorized\"", StatusCode: 401}, nil
 	}
 
-	return events.APIGatewayProxyResponse{Body: request.Headers, StatusCode: 200}, nil
+	return events.APIGatewayProxyResponse{Body: request.Body, StatusCode: 200}, nil
 }
 
 func main() {
