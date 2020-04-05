@@ -1,48 +1,6 @@
 # This is a basic workflow to help you get started with Actions
-
-name: Compile Arduino
-#dummy commit
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
-  push:
-    paths:
-      - 'Arduino/**'
-    branches: [ master ]
-  pull_request:
-    paths:
-      - 'Arduino/**'
-    branches: [ master ]
-
-jobs:
-  build-arduino:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-      
-    - name: Setup Arduino CLI
-      uses: arduino/setup-arduino-cli@v1.0.0
-      with:
-        # Version to use. Example: 0.5.0
-        version: '0.x'
-    
-    - name: Compile 1010 wifi
-      run: |
-        cd Arduino
-        cp smartswitch/example_Secrets.h smartswitch/Secrets.h
-        arduino-cli core update-index
-        arduino-cli core install arduino:samd
-        arduino-cli lib install WiFiNINA
-        mkdir build
-        mkdir build-cache
-        arduino-cli compile --fqbn arduino:samd:mkrwifi1010 smartswitch
-
-
 name: deploy to lambda
+
 on:
   push:
     paths:
