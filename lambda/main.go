@@ -25,7 +25,7 @@ func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	for key, value := range request.Headers {
 		log.Printf("    %s: %s\n", key, value)
 	}
-	_, found := request.Headers["Authorization"]
+	_, found := request.Headers["authorization"]
 
 	if !found {
 		return events.APIGatewayProxyResponse{Body: "\"message\": \"unauthorized\"", StatusCode: 401}, nil
