@@ -17,15 +17,20 @@ type MyResponse struct {
 }
 
 func HandleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Printf("Processing request data for request %s.\n", request.RequestContext.RequestID)
-	fmt.Printf("Body size = %d.\n", len(request.Body))
+	//fmt.Printf("Processing request data for request %s.\n", request.RequestContext.RequestID)
+	//fmt.Printf("Body size = %d.\n", len(request.Body))
 
-	fmt.Println("Headers:")
-	for key, value := range request.Headers {
-		fmt.Printf("    %s: %s\n", key, value)
+	//fmt.Println("Headers:")
+	//for key, value := range request.Headers {
+	//	fmt.Printf("    %s: %s\n", key, value)
+	//}
+	value, found := request.Headers["Authorization"]
+
+	if !found {
+		return events.APIGatewayProxyResponse{Message: "unauthorized"}, nil
 	}
 
-	return events.APIGatewayProxyResponse{Body: request.Body, StatusCode: 200}, nil
+	return events.APIGatewayProxyResponse{Body: request.Body, Headers: request.Headers, StatusCode: 200}, nil
 }
 
 func main() {
