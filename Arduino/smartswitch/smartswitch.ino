@@ -24,8 +24,12 @@
 #include <ArduinoECCX08.h>
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h>
+#include <ArduinoJson.h>
 
 #include "arduino_secrets.h"
+
+const int relay1 = 1;
+const int relay2 = 2;
 
 /////// Enter your sensitive data in arduino_secrets.h
 const char ssid[]        = SECRET_SSID;
@@ -39,7 +43,26 @@ MqttClient    mqttClient(sslClient); // Used for MQTT connection
 
 unsigned long lastMillis = 0;
 
+bool switch_on = false;
+
 void setup() {
+  //initialize relays pins and drive them low
+  pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  digitalWrite(relay1, LOW);
+  digitalWrite(relay2, LOW);
+
+  delay(10000);
+  digitalWrite(relay1, HIGH);
+  digitalWrite(relay2, HIGH);
+  switch_on = true;
+  delay(10000);
+
+  digitalWrite(relay1, LOW);
+  digitalWrite(relay2, LOW);
+  switch_on = false;
+
+
   Serial.begin(115200);
   while (!Serial);
 
@@ -80,13 +103,6 @@ void loop() {
 
   // poll for new MQTT messages and send keep alives
   mqttClient.poll();
-
-  // publish a message roughly every 5 seconds.
-  if (millis() - lastMillis > 5000) {
-    lastMillis = millis();
-
-    publishMessage();
-  }
 }
 
 unsigned long getTime() {
@@ -129,28 +145,50 @@ void connectMQTT() {
   mqttClient.subscribe("arduino/incoming");
 }
 
-void publishMessage() {
+void publishMessage(char * str) {
   Serial.println("Publishing message");
 
   // send message, the Print interface can be used to set the message contents
   mqttClient.beginMessage("arduino/outgoing");
-  mqttClient.print("hello ");
+  mqttClient.print(str);
   mqttClient.endMessage();
 }
 
 void onMessageReceived(int messageSize) {
-  // we received a message, print out the topic and contents
-  Serial.print("Received a message with topic '");
-  Serial.print(mqttClient.messageTopic());
-  Serial.print("', length ");
-  Serial.print(messageSize);
-  Serial.println(" bytes:");
+  const char SIZE = 50;
+  int i = 0;
+  char input[SIZE];
+  StaticJsonDocument<SIZE>doc;
 
-  // use the Stream interface to print the contents
-  while (mqttClient.available()) {
-    Serial.print((char)mqttClient.read());
+  // use the Stream interface to store the contents
+  while (mqttClient.available() && i < SIZE) {
+    input[i] = (char)mqttClient.read();
+    i++;
   }
-  Serial.println();
 
-  Serial.println();
+  deserializeJson(doc, input);
+  String status = doc["status"];
+  status.trim();
+
+  if (status == "on") {
+    if (switch_on == false) {
+      digitalWrite(relay1, HIGH);
+      digitalWrite(relay2, HIGH);
+      switch_on = true;
+    }
+    publishMessage("{\"message\": \"switch on\"}");
+  }
+
+  else if (status == "off") {
+    if (switch_on == true) {
+      digitalWrite(relay1, LOW);
+      digitalWrite(relay2, LOW);
+      switch_on = false; 
+    }
+    publishMessage("{\"message\": \"switch off\"}");
+  }
+
+  else {
+    publishMessage("{\"message\": \"ERROR: invalid status\"}");
+  }
 }
