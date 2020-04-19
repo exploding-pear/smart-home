@@ -2,6 +2,6 @@ import boto3
 import json
 
 def handler(event, context):
-	print(type(event))
-	print(type(context))
-	return("{\"message\":\"hello world!\"}")
+	for key in event.keys():
+		print("{key}: {value}".format(key=key, value=event[key]))
+	return("{ \"message\": \"hello world!\"}")
