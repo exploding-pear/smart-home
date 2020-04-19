@@ -33,6 +33,7 @@ jobs:
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
         unzip awscliv2.zip
         sudo ./aws/install
+        zip function.zip lambda/main.py
         mkdir package
         cp lambda/main.py package
         python3 -m pip install --system --target ./package -r lambda/requirements.txt
