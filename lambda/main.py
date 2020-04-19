@@ -7,6 +7,6 @@ def handler(event, context):
 	
 	message = json.loads('{"message": "hello world!"}')
 
-	print(event['body'])
+	print(type(event['body']))
 
 	return(message)
