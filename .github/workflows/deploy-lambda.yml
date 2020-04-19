@@ -28,7 +28,7 @@ jobs:
     steps:
     - name: deploy
       run: |
-        apt-get install aws
+        sudo apt-get -y install aws
         mkdir package
         cp lambda/main.py package
         pip install --target ./package -r lambda/requirements.txt
