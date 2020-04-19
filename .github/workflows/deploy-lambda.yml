@@ -35,7 +35,7 @@ jobs:
         sudo ./aws/install
         mkdir package
         cp lambda/main.py package
-        python3 -m pip install --target ./package -r lambda/requirements.txt
+        python3 -m pip install --system --target ./package -r lambda/requirements.txt
         cd package
         zip -r9 ${OLDPWD}/function.zip
         aws lambda update-function-code --function-name smart-home --zip-file fileb://function.zip
