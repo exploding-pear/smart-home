@@ -39,6 +39,7 @@ jobs:
         python3 -m pip install --system --target ./package -r lambda/requirements.txt
         cd package
         zip -r9 ${OLDPWD}/function.zip .
+        cd ${OLDPWD}
         aws lambda update-function-code --function-name smart-home --zip-file fileb://function.zip
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
