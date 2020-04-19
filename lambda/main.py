@@ -4,3 +4,4 @@ import json
 def handler(event, context):
 	print(type(event))
 	print(type(context))
+	return("{\"message\":\"hello world!\"}")
