@@ -13,7 +13,7 @@ def handler(event, context):
 
 	body = json.loads(event['body'])
 	if body['status'] == "on":
-		response = client.publish(topic='arduino/incoming', qos=0, payload=json.loads('{"status": "on"}'))
+		response = client.publish(topic='arduino/incoming', qos=0, payload=b'{"status": "on"}')
 		message = json.loads('{"message": "switch on"}')
 	elif body['status'] == "off":
 		message = json.loads('{"message": "switch off"}')
