@@ -35,6 +35,7 @@ jobs:
         arduino-cli core install arduino:samd
         arduino-cli lib install WiFiNINA
         arduino-cli lib install ArduinoJson
+        arduino-cli lib install ArduinoBearSSL
         mkdir build
         mkdir build-cache
         arduino-cli compile --fqbn arduino:samd:mkrwifi1010 smartswitch
