@@ -1,25 +1,3 @@
-/*
-  AWS IoT WiFi
-
-  This sketch securely connects to an AWS IoT using MQTT over WiFi.
-  It uses a private key stored in the ATECC508A and a public
-  certificate for SSL/TLS authetication.
-
-  It publishes a message every 5 seconds to arduino/outgoing
-  topic and subscribes to messages on the arduino/incoming
-  topic.
-
-  The circuit:
-  - Arduino MKR WiFi 1010 or MKR1000
-
-  The following tutorial on Arduino Project Hub can be used
-  to setup your AWS account and the MKR board:
-
-  https://create.arduino.cc/projecthub/132016/securely-connecting-an-arduino-mkr-wifi-1010-to-aws-iot-core-a9f365
-
-  This example code is in the public domain.
-*/
-
 #include <ArduinoBearSSL.h>
 #include <ArduinoECCX08.h>
 #include <ArduinoMqttClient.h>
@@ -63,11 +41,11 @@ void setup() {
   switch_on = false;
 
 
-  Serial.begin(115200);
-  while (!Serial);
+  //Serial.begin(115200);
+  //while (!Serial);
 
   if (!ECCX08.begin()) {
-    Serial.println("No ECCX08 present!");
+    //Serial.println("No ECCX08 present!");
     while (1);
   }
 
@@ -111,42 +89,42 @@ unsigned long getTime() {
 }
 
 void connectWiFi() {
-  Serial.print("Attempting to connect to SSID: ");
-  Serial.print(ssid);
-  Serial.print(" ");
+  //Serial.print("Attempting to connect to SSID: ");
+  //Serial.print(ssid);
+  //Serial.print(" ");
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
     // failed, retry
-    Serial.print(".");
+    //Serial.print(".");
     delay(5000);
   }
-  Serial.println();
+  //Serial.println();
 
-  Serial.println("You're connected to the network");
-  Serial.println();
+  //Serial.println("You're connected to the network");
+  //Serial.println();
 }
 
 void connectMQTT() {
-  Serial.print("Attempting to MQTT broker: ");
-  Serial.print(broker);
-  Serial.println(" ");
+  //Serial.print("Attempting to MQTT broker: ");
+  //Serial.print(broker);
+  //Serial.println(" ");
 
   while (!mqttClient.connect(broker, 8883)) {
     // failed, retry
-    Serial.print(".");
+    //Serial.print(".");
     delay(5000);
   }
-  Serial.println();
+  //Serial.println();
 
-  Serial.println("You're connected to the MQTT broker");
-  Serial.println();
+  //Serial.println("You're connected to the MQTT broker");
+  //Serial.println();
 
   // subscribe to a topic
   mqttClient.subscribe("arduino/incoming");
 }
 
 void publishMessage(char * str) {
-  Serial.println("Publishing message");
+  //Serial.println("Publishing message");
 
   // send message, the Print interface can be used to set the message contents
   mqttClient.beginMessage("arduino/outgoing");
