@@ -28,7 +28,9 @@ jobs:
     steps:
     - name: deploy
       run: |
-        sudo apt-get -y install aws
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
         mkdir package
         cp lambda/main.py package
         pip install --target ./package -r lambda/requirements.txt
