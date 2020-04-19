@@ -26,8 +26,8 @@ jobs:
     name: deploy lambda function
     runs-on: ubuntu-latest
     steps:
-    - name: deploy
     - uses: actions/checkout@master
+    - name: deploy
       run: |
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
         unzip awscliv2.zip
